@@ -70,8 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </Link>
           </button>
         </nav>
-        {/* Load the streamer questions by default */}
-        <StreamerQuestions />
         <AppRoutes />
       </Router>
     </SocketProvider>
