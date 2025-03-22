@@ -91,7 +91,7 @@ function StreamerResponses() {
             Number(label) - Number(correctAnswers?.[0])
           );
           const answer = Number(correctAnswers?.[0]);
-          const weight = data.question?.weight || 1;
+          const weight = data.weight;
           return Math.max(
             0,
             Math.floor((1 - difference / answer) * 15 * Math.abs(weight))
