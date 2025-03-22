@@ -80,12 +80,25 @@ function StreamerResponses() {
           },
         });
       } else if (data.question_type === "numbers") {
-        const closestLabel = labels.reduce((prev, curr) => {
-          return Math.abs(Number(curr) - Number(correctAnswers?.[0])) <
-            Math.abs(Number(prev) - Number(correctAnswers?.[0]))
-            ? curr
-            : prev;
+        // const closestLabel = labels.reduce((prev, curr) => {
+        //   return Math.abs(Number(curr) - Number(correctAnswers?.[0])) <
+        //     Math.abs(Number(prev) - Number(correctAnswers?.[0]))
+        //     ? curr
+        //     : prev;
+        // });
+        const scores = labels.map((label) => {
+          const difference = Math.abs(
+            Number(label) - Number(correctAnswers?.[0])
+          );
+          const answer = Number(correctAnswers?.[0]);
+          const weight = data.question?.weight || 1;
+          return Math.max(
+            0,
+            Math.floor((1 - difference / answer) * 15 * Math.abs(weight))
+          );
         });
+
+        const scoredLabels = labels.filter((_, index) => scores[index] > 0);
 
         new Chart(ctx, {
           type: "bar",
@@ -95,7 +108,7 @@ function StreamerResponses() {
               {
                 data: counts,
                 backgroundColor: labels.map((label) =>
-                  label === closestLabel ? "green" : "red"
+                  scoredLabels.includes(label) ? "green" : "red"
                 ),
               },
             ],
