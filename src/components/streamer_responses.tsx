@@ -118,6 +118,15 @@ function StreamerResponses() {
               legend: {
                 display: false,
               },
+              title: {
+                display: true,
+                text: `${correctAnswers?.join(", ")}`,
+                font: {
+                  size: 64,
+                  weight: "bold",
+                },
+                color: "black",
+              },
             },
           },
         });
