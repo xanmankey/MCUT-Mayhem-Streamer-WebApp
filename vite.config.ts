@@ -6,13 +6,13 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "./",
+  // base: "./",
   plugins: [react(), tailwindcss()],
   server: {
-    https: {
-      key: fs.readFileSync("cert.key"), // Use .key file
-      cert: fs.readFileSync("cert.crt"), // Use .crt file
-    },
+    // https: {
+    //   key: fs.readFileSync("localhost.key"), // Use .key file
+    //   cert: fs.readFileSync("localhost.crt"), // Use .crt file
+    // },
     port: 8080,
   },
   // build: {

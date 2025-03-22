@@ -27,3 +27,5 @@ dist-ssr
 dist.zip
 cert.crt
 cert.key
+localhost.crt
+localhost.key

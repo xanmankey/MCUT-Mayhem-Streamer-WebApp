@@ -2,7 +2,7 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
-import { SocketProvider } from "./utils";
+import { BACKEND, SocketProvider } from "./utils";
 // Streamer side has routing
 import {
   BrowserRouter as Router,
@@ -68,6 +68,48 @@ document.addEventListener("DOMContentLoaded", () => {
             >
               Leaderboard
             </Link>
+          </button>
+          <button
+            style={{ margin: "0 10px", backgroundColor: "red", color: "white" }}
+            onClick={() => {
+              fetch(BACKEND + "/reset_questions", { method: "POST" })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log("Questions reset:", data);
+                  window.location.reload();
+                })
+                .catch((error) => {
+                  console.error("Error resetting questions:", error);
+                });
+            }}
+          >
+            Reset Questions
+          </button>
+          <button
+            style={{ margin: "0 10px", backgroundColor: "red", color: "white" }}
+            onClick={() => {
+              fetch(BACKEND + "/delete_players", { method: "POST" })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log("Players deleted:", data);
+                  window.location.reload();
+                })
+                .catch((error) => {
+                  console.error("Error deleting players:", error);
+                });
+            }}
+          >
+            Delete Players
           </button>
         </nav>
         <AppRoutes />
