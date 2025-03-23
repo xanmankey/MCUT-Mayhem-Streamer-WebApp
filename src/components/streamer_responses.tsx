@@ -76,6 +76,15 @@ function StreamerResponses() {
               legend: {
                 display: false,
               },
+              title: {
+                display: true,
+                text: `${correctAnswers?.join(", ")}`,
+                font: {
+                  size: 64,
+                  weight: "bold",
+                },
+                color: "green",
+              },
             },
           },
         });
@@ -125,7 +134,7 @@ function StreamerResponses() {
                   size: 64,
                   weight: "bold",
                 },
-                color: "black",
+                color: "green",
               },
             },
           },
@@ -145,6 +154,15 @@ function StreamerResponses() {
             plugins: {
               legend: {
                 display: false,
+              },
+              title: {
+                display: true,
+                text: `${correctAnswers?.join(", ")}`,
+                font: {
+                  size: 64,
+                  weight: "bold",
+                },
+                color: "green",
               },
             },
             elements: {
