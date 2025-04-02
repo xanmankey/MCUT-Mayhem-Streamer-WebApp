@@ -56,12 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <button style={{ margin: "0 10px" }}>
+          <button style={{ margin: "0 10px", color: "black" }}>
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               Questions
             </Link>
           </button>
-          <button style={{ margin: "0 10px" }}>
+          <button style={{ margin: "0 10px", color: "black" }}>
             <Link
               to="/leaderboard"
               style={{ textDecoration: "none", color: "inherit" }}

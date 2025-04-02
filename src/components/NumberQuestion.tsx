@@ -7,7 +7,9 @@ function NumberQuestion({ question, sendResponse }: QuestionProps) {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
-      <h1 className="text-4xl font-bold mb-4">{question.question}</h1>
+      <h1 className="text-4xl text-black font-bold mb-4">
+        {question.question}
+      </h1>
       <input
         type="number"
         className="border p-2"

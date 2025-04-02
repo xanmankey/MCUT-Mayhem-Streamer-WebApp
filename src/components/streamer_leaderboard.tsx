@@ -48,7 +48,7 @@ function StreamerLeaderboard() {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button
-        className="w-64 px-4 py-2 mb-4 rounded-full text-white focus:outline-none bg-purple-600"
+        className="w-64 px-4 py-2 mb-4 rounded-full text-black focus:outline-none bg-purple-600"
         onClick={() => {
           const randomPlayerIndex = Math.floor(
             Math.random() * leaderboard.length
@@ -66,7 +66,7 @@ function StreamerLeaderboard() {
         {filteredLeaderboard.map((player, index) => (
           <div
             key={player.username}
-            className={`bg-white shadow-md rounded-lg p-4 mb-4 flex items-center justify-between ${
+            className={`bg-white text-black shadow-md rounded-lg p-4 mb-4 flex items-center justify-between ${
               player.isHighlighted ? "bg-yellow-300" : ""
             }`}
           >
