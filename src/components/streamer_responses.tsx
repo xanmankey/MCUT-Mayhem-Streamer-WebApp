@@ -207,7 +207,7 @@ function StreamerResponses() {
         }}
         key={location.key}
       >
-        <p style={{ fontSize: "96px", fontWeight: "bold", color: "black" }}>
+        <p style={{ fontSize: "96px", fontWeight: "bold", color: "white" }}>
           No responses available.
         </p>
       </div>

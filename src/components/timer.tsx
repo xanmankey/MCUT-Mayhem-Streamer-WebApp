@@ -63,7 +63,7 @@ function TimerComponent() {
 
   return (
     <div
-      style={{ fontSize: "96px", fontWeight: "bold", color: "black" }}
+      style={{ fontSize: "96px", fontWeight: "bold", color: "white" }}
       key={location.key}
     >
       {minutes}:{seconds}
