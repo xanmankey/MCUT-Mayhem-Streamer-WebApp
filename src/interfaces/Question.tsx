@@ -7,4 +7,5 @@ export interface Question {
   answer: string;
   weight: number;
   asked: boolean;
+  image_url: string;
 }

@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 // import { socket } from "../utils";
 import { SocketContext } from "../utils";
+import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
+import ShortAnswerQuestion from "./ShortAnswerQuestion";
+import NumberQuestion from "./NumberQuestion";
 
 function TimerComponent() {
   const socket = useContext(SocketContext);
@@ -12,6 +15,7 @@ function TimerComponent() {
     duration: number;
     question_number: number;
   };
+  const question = location.state?.question;
   const [timeLeft, setTimeLeft] = useState(duration);
   const endQuestionEmitted = useRef(false);
 
@@ -63,10 +67,32 @@ function TimerComponent() {
 
   return (
     <div
-      style={{ fontSize: "96px", fontWeight: "bold", color: "white" }}
       key={location.key}
+      className="flex flex-col items-center justify-center h-screen w-screen bg-white"
     >
-      {minutes}:{seconds}
+      <div
+        className="h-1/6 flex py-10"
+        style={{
+          fontSize: "96px",
+          fontWeight: "bold",
+          color: "black",
+          marginBottom: "20px",
+        }}
+      >
+        {minutes}:{seconds}
+      </div>
+      <div className="flex-1 flex justify-center w-full h-1/2">
+        {question.question_type === "multiple_choice" ||
+        question.question_type === "this_or_that" ? (
+          <MultipleChoiceQuestion question={question} />
+        ) : question.question_type === "short_answer" ? (
+          <ShortAnswerQuestion question={question} />
+        ) : question.question_type === "numbers" ? (
+          <NumberQuestion question={question} />
+        ) : (
+          <p className="text-2xl font-bold">Unknown question type</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -79,6 +105,7 @@ function Timer() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        color: "black",
       }}
     >
       <TimerComponent />

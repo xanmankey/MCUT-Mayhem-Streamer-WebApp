@@ -29,6 +29,7 @@ function StreamerQuestions() {
       state: {
         duration: parsedQuestion.time,
         question_number: parsedQuestion.number,
+        question: parsedQuestion,
       },
     });
     console.log(parsedQuestion);
