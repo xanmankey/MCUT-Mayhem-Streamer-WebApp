@@ -7,7 +7,7 @@ function NumberQuestion({ question }: QuestionProps) {
 
   return (
     <div>
-      <h1 className="text-9xl text-black font-bold mb-4">
+      <h1 className="text-9xl text-black text-center font-bold mb-4">
         {question.question}
       </h1>
       {question.image_url && (
