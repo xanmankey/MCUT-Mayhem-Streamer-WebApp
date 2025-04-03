@@ -22,7 +22,7 @@ function MultipleChoiceQuestion({ question }: QuestionProps) {
       <div className="flex flex-col items-center">
         <input
           type="text"
-          className="border p-2 mb-4"
+          className="border-4 border-solid p-2 mb-4"
           placeholder="Type your answer..."
           value={answer}
           onChange={(e) => {
