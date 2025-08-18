@@ -6,6 +6,7 @@ import { SocketContext } from "../utils";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
 import ShortAnswerQuestion from "./ShortAnswerQuestion";
 import NumberQuestion from "./NumberQuestion";
+import DropdownQuestion from "./DropdownQuestion";
 
 function TimerComponent() {
   const socket = useContext(SocketContext);
@@ -85,6 +86,8 @@ function TimerComponent() {
           <NumberQuestion question={question} />
         ) : question.question_type === "ranked_answer" ? (
           <ShortAnswerQuestion question={question} />
+        ) : question.question_type === "dropdown" ? (
+          <DropdownQuestion question={question} />
         ) : (
           <p className="text-2xl font-bold">Unknown question type</p>
         )}
