@@ -25,14 +25,8 @@ function TimerComponent() {
       console.log("times up");
       // Remove timer from the page
       const timerElement = document.getElementById("timer");
-      if (
-        timerElement &&
-        timerElement.parentElement &&
-        timerElement.parentElement.parentElement
-      ) {
-        timerElement.parentElement.parentElement.removeChild(
-          timerElement.parentElement
-        );
+      if (timerElement && timerElement.parentElement && timerElement.parentElement.parentElement) {
+        timerElement.parentElement.parentElement.removeChild(timerElement.parentElement);
       }
       // Emit the answer to the server
       if (!endQuestionEmitted.current) {
@@ -89,6 +83,8 @@ function TimerComponent() {
           <ShortAnswerQuestion question={question} />
         ) : question.question_type === "numbers" ? (
           <NumberQuestion question={question} />
+        ) : question.question_type === "ranked_answer" ? (
+          <ShortAnswerQuestion question={question} />
         ) : (
           <p className="text-2xl font-bold">Unknown question type</p>
         )}
