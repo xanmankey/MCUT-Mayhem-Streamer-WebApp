@@ -13,22 +13,20 @@ function DropdownQuestion({ question }: QuestionProps) {
             <img src={question.image_url} alt="Question related" className="w-160 h-auto" />
           </div>
         )}
-        {question.choices.split(",").map((choice, index) => (
-          <div className="flex items-center">
-            {/* <label htmlFor={`dropdown-${index}`} className="mr-2 text-lg font-medium">
-              Choice {index + 1}:
-            </label> */}
-            <select
-              id={`dropdown-${index}`}
-              value={answer === choice ? choice : ""}
-              onChange={() => setAnswer(choice)}
-              className="border rounded px-2 py-1"
+
+        <div className="overflow-y-auto max-h-[60vh] w-full flex flex-col gap-4">
+          {question.choices.split(",").map((choice, index) => (
+            <button
+              key={index}
+              onClick={() => setAnswer(choice)}
+              className={`px-4 py-2 rounded border text-lg font-medium ${
+                answer === choice ? "bg-blue-500 text-white" : "bg-white text-black"
+              }`}
             >
-              <option value="">Select</option>
-              <option value={choice}>{choice}</option>
-            </select>
-          </div>
-        ))}
+              {choice}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
