@@ -89,7 +89,7 @@ function TimerComponent() {
         ) : question.question_type === "dropdown" ? (
           <DropdownQuestion question={question} />
         ) : (
-          <p className="text-2xl font-bold">Unknown question type</p>
+          <p className="text-2xl font-bold">Unknown question type: {question.question_type}</p>
         )}
       </div>
     </div>
