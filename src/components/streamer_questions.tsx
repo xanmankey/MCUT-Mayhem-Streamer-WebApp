@@ -37,13 +37,10 @@ function StreamerQuestions() {
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        paddingTop: "5%",
-      }}
       key={location.key}
+      className="flex flex-col items-center justify-center min-h-screen overflow-y-auto w-screen"
     >
+      <div className="m-10"></div>
       <ul style={{ width: "50%" }}>
         {questions.map((q, index) => (
           <li key={index} style={{ marginBottom: "20px" }}>
@@ -56,9 +53,7 @@ function StreamerQuestions() {
                 fontSize: "16px",
               }}
             >
-              <div style={{ fontWeight: "bold", fontSize: "18px" }}>
-                {q.question}
-              </div>
+              <div style={{ fontWeight: "bold", fontSize: "18px" }}>{q.question}</div>
               <div
                 style={{
                   display: "flex",
@@ -69,9 +64,7 @@ function StreamerQuestions() {
                 <span>Time: {q.time}</span>
                 <span>Weight: {q.weight}</span>
               </div>
-              <div style={{ marginLeft: "20px", fontSize: "16px" }}>
-                {q.answer}
-              </div>
+              <div style={{ marginLeft: "20px", fontSize: "16px" }}>{q.answer}</div>
             </button>
           </li>
         ))}

@@ -4,13 +4,7 @@ import "./index.css";
 
 import { BACKEND, SocketProvider } from "./utils";
 // Streamer side has routing
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import StreamerQuestions from "./components/streamer_questions";
 import StreamerResponses from "./components/streamer_responses";
 import StreamerLeaderboard from "./components/streamer_leaderboard";
@@ -62,10 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </Link>
           </button>
           <button style={{ margin: "0 10px", color: "black" }}>
-            <Link
-              to="/leaderboard"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+            <Link to="/leaderboard" style={{ textDecoration: "none", color: "inherit" }}>
               Leaderboard
             </Link>
           </button>

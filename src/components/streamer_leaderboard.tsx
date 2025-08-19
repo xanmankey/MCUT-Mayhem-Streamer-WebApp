@@ -36,10 +36,7 @@ function StreamerLeaderboard() {
   );
 
   return (
-    <div
-      className="flex flex-col items-center justify-center h-screen w-screen"
-      key={location.key}
-    >
+    <div className="flex flex-col items-center justify-center h-screen w-screen" key={location.key}>
       <input
         type="text"
         placeholder="Search by username"
@@ -50,9 +47,7 @@ function StreamerLeaderboard() {
       <button
         className="w-64 px-4 py-2 mb-4 rounded-full text-black focus:outline-none bg-purple-600"
         onClick={() => {
-          const randomPlayerIndex = Math.floor(
-            Math.random() * leaderboard.length
-          );
+          const randomPlayerIndex = Math.floor(Math.random() * leaderboard.length);
           const updatedLeaderboard = leaderboard.map((player, index) => ({
             ...player,
             isHighlighted: index === randomPlayerIndex,
@@ -77,9 +72,7 @@ function StreamerLeaderboard() {
               type="number"
               className="w-16 px-2 py-1 rounded border border-gray-300 focus:outline-none"
               defaultValue={player.score}
-              onChange={(e) =>
-                handleScoreChange(player.username, Number(e.target.value))
-              }
+              onChange={(e) => handleScoreChange(player.username, Number(e.target.value))}
             />
           </div>
         ))}

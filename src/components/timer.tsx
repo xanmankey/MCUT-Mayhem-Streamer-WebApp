@@ -61,22 +61,30 @@ function TimerComponent() {
   const seconds = (timeLeft % 60).toString().padStart(2, "0");
 
   return (
-    <div
-      key={location.key}
-      className="flex flex-col items-center justify-center h-screen w-screen bg-white"
-    >
-      <div
-        className="h-1/6 flex py-10"
+    <div key={location.key} className="h-screen w-screen">
+      <nav
         style={{
-          fontSize: "96px",
-          fontWeight: "bold",
-          color: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           marginBottom: "20px",
+          fontSize: "3rem",
+          fontWeight: "bold",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          backgroundColor: "white",
+          zIndex: 1000,
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          textAlign: "center",
         }}
       >
-        {minutes}:{seconds}
-      </div>
-      <div className="flex-1 flex justify-center w-full h-1/2">
+        <span style={{ width: "100%", textAlign: "center" }}>
+          {minutes}:{seconds}
+        </span>
+      </nav>
+      <div className="flex flex-col justify-center w-full h-full items-center">
         {question.question_type === "multiple_choice" ||
         question.question_type === "this_or_that" ? (
           <MultipleChoiceQuestion question={question} />
@@ -98,17 +106,19 @@ function TimerComponent() {
 
 function Timer() {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        color: "black",
-      }}
-    >
-      <TimerComponent />
-    </div>
+    <main>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          color: "black",
+        }}
+      >
+        <TimerComponent />
+      </div>
+    </main>
   );
 }
 
