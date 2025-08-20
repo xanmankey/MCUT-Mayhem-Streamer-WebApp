@@ -56,7 +56,8 @@ function StreamerResponses() {
     if (ctx) {
       if (
         data.question_type === "multiple_choice" ||
-        data.question_type === "this_or_that"
+        data.question_type === "this_or_that" ||
+        data.question_type === "dropdown"
       ) {
         new Chart(ctx, {
           type: "pie",
@@ -96,15 +97,10 @@ function StreamerResponses() {
         //     : prev;
         // });
         const scores = labels.map((label) => {
-          const difference = Math.abs(
-            Number(label) - Number(correctAnswers?.[0])
-          );
+          const difference = Math.abs(Number(label) - Number(correctAnswers?.[0]));
           const answer = Number(correctAnswers?.[0]);
           const weight = data.weight;
-          return Math.max(
-            0,
-            Math.floor((1 - difference / answer) * 15 * Math.abs(weight))
-          );
+          return Math.max(0, Math.floor((1 - difference / answer) * 15 * Math.abs(weight)));
         });
 
         const scoredLabels = labels.filter((_, index) => scores[index] > 0);
@@ -169,9 +165,7 @@ function StreamerResponses() {
               word: {
                 color: (context) => {
                   const labels = context.chart.data.labels;
-                  const label = labels
-                    ? (labels[context.dataIndex] as string)
-                    : "";
+                  const label = labels ? (labels[context.dataIndex] as string) : "";
                   console.log(label);
                   return correctAnswers?.some((answer: string) =>
                     label.toLowerCase().includes(answer.toLowerCase())
@@ -179,6 +173,44 @@ function StreamerResponses() {
                     ? "green"
                     : "red";
                 },
+              },
+            },
+          },
+        });
+      } else if (data.question_type === "ranked_answer") {
+        // For ranked answers, we need to rank the correct answers
+        // A bar chart would probably be best, with the titles appending the number of points to the answers
+        const rankedLabels = labels.map((label, index) => {
+          const points = counts[index];
+          return `${label} (${points} points)`;
+        });
+
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: rankedLabels,
+            datasets: [
+              {
+                data: counts,
+                backgroundColor: labels.map((label) =>
+                  correctAnswers?.includes(label) ? "green" : "red"
+                ),
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: `${correctAnswers?.join(", ")}`,
+                font: {
+                  size: 64,
+                  weight: "bold",
+                },
+                color: "green",
               },
             },
           },
@@ -226,11 +258,7 @@ function StreamerResponses() {
       }}
       key={location.key}
     >
-      <canvas
-        ref={chartRef}
-        id="chart"
-        style={{ maxWidth: "100%", maxHeight: "100%" }}
-      />
+      <canvas ref={chartRef} id="chart" style={{ maxWidth: "100%", maxHeight: "100%" }} />
     </div>
   );
 }

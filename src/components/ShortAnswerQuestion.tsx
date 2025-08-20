@@ -24,7 +24,7 @@ function ShortAnswerQuestion({ question }: QuestionProps) {
         <div className="flex flex-col items-center w-2/3">
           <textarea
             className="border-4 border-solid border-black text-black p-2 w-full resize-none"
-            placeholder={question.question}
+            placeholder="Type your answer..."
             value={answer}
             rows={Math.max(1, Math.min(8, Math.ceil(answer.length / 20)))}
             style={{ maxHeight: "20vh", minHeight: "3rem" }}
