@@ -30,7 +30,7 @@ function AppRoutes() {
 
 function MainApp() {
   const socket = useContext(SocketContext);
-  const [score, setScore] = useState();
+  const [score, setScore] = useState<string>();
   const [hostImage, setHostImage] = useState();
   const location = useLocation();
 
