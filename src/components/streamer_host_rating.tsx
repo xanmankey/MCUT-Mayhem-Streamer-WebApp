@@ -1,5 +1,5 @@
 // Bar graph showing host ratings and reviews for the selected host
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { useLocation } from "react-router-dom";
 import { BACKEND } from "../utils.tsx";
@@ -10,57 +10,68 @@ import { Chart } from "chart.js";
 function StreamerHostRating() {
   const location = useLocation();
   // const navigate = useNavigate();
-  const [scores, setScores] = useState<Record<string, number>>({});
   const chartRef = useRef<HTMLCanvasElement>(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
 
   useEffect(() => {
     fetch(BACKEND + "/get_scores")
       .then((response) => response.json())
       .then((data) => {
-        setScores(data);
-      });
-  }, []);
+        if (!chartRef.current) return;
+        const ctx = chartRef.current.getContext("2d");
 
-  useEffect(() => {
-    if (!chartRef.current) return;
-    const ctx = chartRef.current.getContext("2d");
+        if (!ctx) return;
 
-    if (!ctx) return;
+        // Destroy previous chart if it exists
+        if (chartInstanceRef.current) {
+          chartInstanceRef.current.destroy();
+          chartInstanceRef.current = null;
+        }
 
-    // Create a vertical gradient for the bar background
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, "#2AE4E0");
-    gradient.addColorStop(1, "#BC13FE");
+        // Create a vertical gradient for the bar background
+        if (ctx) {
+          const labels = Object.keys(data);
+          const vals = Object.values(data);
+          const colors = ["#2AE4E0", "#BC13FE", "#E09B2A", "#A3E02A"];
 
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: Object.keys(scores),
-        datasets: [
-          {
-            data: Object.values(scores),
-            backgroundColor: Object.keys(scores).map(() => gradient),
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: "Host Ratings",
-            font: {
-              size: 24,
-              weight: "bold",
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: vals,
+                  backgroundColor: colors,
+                },
+              ],
             },
-            color: "black",
-          },
-        },
-      },
-    });
-  });
+            options: {
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                title: {
+                  display: true,
+                  text: "Host Ratings",
+                  font: {
+                    size: 24,
+                    weight: "bold",
+                  },
+                  color: "black",
+                },
+              },
+            },
+          });
+        }
+        // Cleanup function to destroy chart when component unmounts
+        return () => {
+          if (chartInstanceRef.current) {
+            chartInstanceRef.current.destroy();
+            chartInstanceRef.current = null;
+          }
+        };
+      });
+  }, [location]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen" key={location.key}>

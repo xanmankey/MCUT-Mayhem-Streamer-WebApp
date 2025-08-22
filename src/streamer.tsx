@@ -61,7 +61,19 @@ function MainApp() {
       .catch((error) => {
         console.error("Error fetching host data:", error);
       });
-  }, []);
+  }, [socket]);
+
+  // Set the host and score on initial load
+  useEffect(() => {
+    socket.on("host_changed", (data) => {
+      setHostImage(data.host_image);
+      setScore("0");
+    });
+
+    return () => {
+      socket.off("score_updated");
+    };
+  }, [location, socket, score]);
 
   return (
     <>
@@ -135,6 +147,14 @@ function MainApp() {
           }}
         >
           Delete Players
+        </button>
+        <button
+          style={{ margin: "0 10px", backgroundColor: "blue", color: "white" }}
+          onClick={() => {
+            socket.emit("change_host");
+          }}
+        >
+          Change Host
         </button>
       </nav>
       <img
