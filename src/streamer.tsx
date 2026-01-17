@@ -9,7 +9,7 @@ import StreamerQuestions from "./components/streamer_questions";
 import StreamerResponses from "./components/streamer_responses";
 import StreamerLeaderboard from "./components/streamer_leaderboard";
 import Timer from "./components/timer";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 function AppRoutes() {
   const location = useLocation();
@@ -28,17 +28,17 @@ function AppRoutes() {
 
 function MainApp() {
   const socket = useContext(SocketContext);
-  const [score, setScore] = useState<string>();
-  const [hostImage, setHostImage] = useState();
-  const location = useLocation();
+  // const [score, setScore] = useState<string>();
+  // const [hostImage, setHostImage] = useState();
+ const location = useLocation();
 
   // This hook will now run on every page change because MainApp is
   // outside the <Routes> component
   useEffect(() => {
     console.log("Location changed:", location);
     socket.on("score_updated", (data) => {
-      setScore(data.score);
-      setHostImage(data.host_image);
+      //setScore(data.score);
+      //setHostImage(data.host_image);
       console.log("New score:", data);
     });
 
