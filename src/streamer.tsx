@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react
 import StreamerQuestions from "./components/streamer_questions";
 import StreamerResponses from "./components/streamer_responses";
 import StreamerLeaderboard from "./components/streamer_leaderboard";
-import StreamerHostRating from "./components/streamer_host_rating";
 import Timer from "./components/timer";
 import { useContext, useEffect, useState } from "react";
 
@@ -22,7 +21,6 @@ function AppRoutes() {
       <Route path="/streamer.html" element={<StreamerQuestions />} />
       <Route path="/responses" element={<StreamerResponses />} />
       <Route path="/leaderboard" element={<StreamerLeaderboard />} />
-      <Route path="/hosts" element={<StreamerHostRating />} />
       <Route path="/timer" element={<Timer />} />
     </Routes>
   );
@@ -49,32 +47,6 @@ function MainApp() {
     };
   }, [location, socket]); // Reruns when location or socket changes
 
-  // Set the host and score on initial load
-  useEffect(() => {
-    fetch(BACKEND + "/get_current_host_score")
-      .then((response) => response.json())
-      .then((data) => {
-        setScore(data.score);
-        setHostImage(data.host_image);
-        console.log("Host and score set:", data);
-      })
-      .catch((error) => {
-        console.error("Error fetching host data:", error);
-      });
-  }, [socket]);
-
-  // Set the host and score on initial load
-  useEffect(() => {
-    socket.on("host_changed", (data) => {
-      setHostImage(data.host_image);
-      setScore("0");
-    });
-
-    return () => {
-      socket.off("score_updated");
-    };
-  }, [location, socket, score]);
-
   return (
     <>
       <nav
@@ -99,11 +71,6 @@ function MainApp() {
         <button style={{ margin: "0 10px", color: "black" }}>
           <Link to="/leaderboard" style={{ textDecoration: "none", color: "inherit" }}>
             Leaderboard
-          </Link>
-        </button>
-        <button style={{ margin: "0 10px", color: "black" }}>
-          <Link to="/hosts" style={{ textDecoration: "none", color: "inherit" }}>
-            Hosts
           </Link>
         </button>
         <button
@@ -148,27 +115,7 @@ function MainApp() {
         >
           Delete Players
         </button>
-        <button
-          style={{ margin: "0 10px", backgroundColor: "blue", color: "white" }}
-          onClick={() => {
-            socket.emit("change_host");
-          }}
-        >
-          Change Host
-        </button>
       </nav>
-      <img
-        src={hostImage}
-        alt="Review Circle"
-        className="rounded-full object-cover w-16 h-16"
-        style={{
-          position: "fixed",
-          top: "0px",
-          left: "5px",
-          zIndex: 10000,
-          border: "2px solid black",
-        }}
-      />
       <div
         id="host-rating-div"
         style={{
@@ -178,9 +125,7 @@ function MainApp() {
           zIndex: 10000,
           fontSize: "2rem", // XL text
         }}
-      >
-        <b>'s Rating: {score}</b>
-      </div>
+      ></div>
       <AppRoutes />
     </>
   );
