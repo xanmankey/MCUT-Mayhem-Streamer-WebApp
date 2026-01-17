@@ -49,8 +49,21 @@ function StreamerLeaderboard() {
     player.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // --- HELPER FOR ROW STYLING ---
+  const getRowStyle = (player: Player) => {
+    if (player.isHighlighted) {
+      return "bg-yellow-100 border-yellow-400 shadow-md transform scale-[1.02] z-10";
+    }
+    if (player.team === "red") {
+      return "bg-red-50 border-red-200 hover:bg-red-100";
+    }
+    if (player.team === "blue") {
+      return "bg-blue-50 border-blue-200 hover:bg-blue-100";
+    }
+    return "bg-gray-50 border-gray-100";
+  };
+
   return (
-    // Added pt-24 to push content down below fixed header
     <div
       className="flex flex-col items-center h-screen w-screen bg-gray-100 pt-24"
       key={location.key}
@@ -124,32 +137,30 @@ function StreamerLeaderboard() {
             {filteredLeaderboard.map((player, index) => (
               <div
                 key={player.username}
-                className={`flex items-center justify-between p-3 mb-2 rounded-lg border ${
-                  player.isHighlighted
-                    ? "bg-yellow-100 border-yellow-400"
-                    : "bg-gray-50 border-gray-100"
-                }`}
+                className={`flex items-center justify-between p-3 mb-2 rounded-lg border transition-all ${getRowStyle(
+                  player
+                )}`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full font-bold text-gray-600 text-sm">
+                  <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full font-bold text-gray-600 text-sm shadow-sm">
                     {index + 1}
                   </div>
                   <span className="font-bold text-lg text-gray-800">{player.username}</span>
                 </div>
                 <div className="flex items-center gap-4">
                   {player.team === "red" && (
-                    <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded">
+                    <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded border border-red-200">
                       MAFIA
                     </span>
                   )}
                   {player.team === "blue" && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded">
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded border border-blue-200">
                       FBI
                     </span>
                   )}
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-right font-mono font-bold text-xl text-gray-700 border border-gray-300 rounded focus:outline-none focus:border-purple-500"
+                    className="w-20 px-2 py-1 text-right font-mono font-bold text-xl text-gray-700 border border-gray-300 rounded focus:outline-none focus:border-purple-500 bg-white/50"
                     value={player.score}
                     onChange={(e) => handleScoreChange(player.username, Number(e.target.value))}
                   />
