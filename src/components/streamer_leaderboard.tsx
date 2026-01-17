@@ -3,7 +3,6 @@ import { BACKEND, SocketContext } from "../utils.tsx";
 import { Player } from "../interfaces/Player.tsx";
 import { useLocation } from "react-router-dom";
 
-// UPDATED GOAL SCORE
 const GOAL_SCORE = 1000;
 
 function StreamerLeaderboard() {
@@ -44,17 +43,6 @@ function StreamerLeaderboard() {
       .catch((err) => console.error(err));
   };
 
-  const triggerScriptedEvent = (eventType: string) => {
-    fetch(BACKEND + "/trigger_scripted_event", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event_type: eventType }),
-    })
-      .then((res) => res.json())
-      .then(() => fetchData())
-      .catch((err) => console.error(err));
-  };
-
   const redPercent = Math.min(100, Math.max(0, (teamScores.red / GOAL_SCORE) * 100));
   const bluePercent = Math.min(100, Math.max(0, (teamScores.blue / GOAL_SCORE) * 100));
   const filteredLeaderboard = leaderboard.filter((player) =>
@@ -62,27 +50,12 @@ function StreamerLeaderboard() {
   );
 
   return (
-    <div className="flex flex-col items-center h-screen w-screen bg-gray-100" key={location.key}>
-      {/* --- HIDDEN HEADER (For OBS cropping) --- */}
-      <div className="w-full bg-gray-800 p-4 shadow-lg flex justify-center gap-8 z-50">
-        <button
-          onClick={() => triggerScriptedEvent("betray_fbi")}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center text-sm"
-        >
-          <span>⚡ EVENT 1: Betray FBI</span>
-          <span className="opacity-75 text-xs">(-250 pts)</span>
-        </button>
-
-        <button
-          onClick={() => triggerScriptedEvent("equalize")}
-          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center text-sm"
-        >
-          <span>⚡ EVENT 2: The Equalizer</span>
-          <span className="opacity-75 text-xs">(Tie @ 900)</span>
-        </button>
-      </div>
-
-      {/* --- MAIN CONTENT (Visible Stream Area) --- */}
+    // Added pt-24 to push content down below fixed header
+    <div
+      className="flex flex-col items-center h-screen w-screen bg-gray-100 pt-24"
+      key={location.key}
+    >
+      {/* --- MAIN CONTENT --- */}
       <div className="flex flex-col items-center w-full p-4 flex-grow overflow-hidden">
         {/* Progress Bars */}
         <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 mb-6">

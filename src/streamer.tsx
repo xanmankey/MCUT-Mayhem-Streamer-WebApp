@@ -1,4 +1,3 @@
-// streamer.tsx
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
@@ -57,12 +56,25 @@ function MainApp() {
       .catch((error) => console.error("Error triggering overlay:", error));
   };
 
+  // --- NEW: SCRIPTED EVENT TRIGGER ---
+  const triggerScriptedEvent = (eventType: string) => {
+    fetch(BACKEND + "/trigger_scripted_event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event_type: eventType }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("Event triggered:", data))
+      .catch((err) => console.error("Error triggering event:", err));
+  };
+
   return (
     <>
       <nav
         style={{
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
           flexWrap: "wrap",
           marginBottom: "20px",
           position: "fixed",
@@ -72,49 +84,62 @@ function MainApp() {
           zIndex: 1000,
           padding: "10px 0",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          gap: "10px",
         }}
       >
-        <button style={{ margin: "5px 10px", color: "black" }}>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <button style={{ color: "black", border: "1px solid #ccc" }}>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit", padding: "5px 10px" }}>
             Questions
           </Link>
         </button>
-        <button style={{ margin: "5px 10px", color: "black" }}>
-          <Link to="/leaderboard" style={{ textDecoration: "none", color: "inherit" }}>
+        <button style={{ color: "black", border: "1px solid #ccc" }}>
+          <Link
+            to="/leaderboard"
+            style={{ textDecoration: "none", color: "inherit", padding: "5px 10px" }}
+          >
             Leaderboard
           </Link>
         </button>
-
-        {/* --- ASSIGN TEAMS BUTTON --- */}
+        <div style={{ width: "20px" }}></div> {/* Spacer */}
+        {/* --- GAME CONTROLS --- */}
         <button
-          style={{ margin: "5px 10px", backgroundColor: "#6200ea", color: "white" }}
+          style={{ backgroundColor: "#6200ea", color: "white" }}
           onClick={() => {
             fetch(BACKEND + "/assign_teams", { method: "POST" })
               .then((res) => res.json())
-              .then((data) => console.log("Teams assigned:", data))
-              .catch((error) => console.error("Error assigning teams:", error));
+              .then((data) => console.log("Teams assigned:", data));
           }}
         >
           Assign Teams
         </button>
-
-        {/* --- REVEAL BUTTON --- */}
         <button
           style={{
-            margin: "5px 10px",
             backgroundColor: overlayState === "none" ? "gray" : "#d32f2f",
             color: "white",
             fontWeight: "bold",
-            minWidth: "150px",
           }}
           onClick={toggleOverlay}
         >
           {overlayState === "none" ? "Reveal Allegiance" : "Hide Allegiance"}
         </button>
-
-        {/* --- STANDARD BUTTONS --- */}
+        <div style={{ width: "20px" }}></div> {/* Spacer */}
+        {/* --- SECRET EVENT BUTTONS (For Streamer Only) --- */}
         <button
-          style={{ margin: "5px 10px", backgroundColor: "red", color: "white" }}
+          onClick={() => triggerScriptedEvent("betray_fbi")}
+          style={{ backgroundColor: "#7f1d1d", color: "#fca5a5", border: "2px solid #991b1b" }}
+        >
+          ⚡ Betray FBI (-250)
+        </button>
+        <button
+          onClick={() => triggerScriptedEvent("equalize")}
+          style={{ backgroundColor: "#581c87", color: "#d8b4fe", border: "2px solid #6b21a8" }}
+        >
+          ⚡ Equalizer (Tie)
+        </button>
+        <div style={{ width: "20px" }}></div> {/* Spacer */}
+        {/* --- RESET CONTROLS --- */}
+        <button
+          style={{ backgroundColor: "red", color: "white" }}
           onClick={() => {
             fetch(BACKEND + "/reset_questions", { method: "POST" })
               .then((res) => res.json())
@@ -124,7 +149,7 @@ function MainApp() {
           Reset Questions
         </button>
         <button
-          style={{ margin: "5px 10px", backgroundColor: "red", color: "white" }}
+          style={{ backgroundColor: "red", color: "white" }}
           onClick={() => {
             fetch(BACKEND + "/delete_players", { method: "POST" })
               .then((res) => res.json())
