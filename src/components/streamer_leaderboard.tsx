@@ -24,14 +24,16 @@ function StreamerLeaderboard() {
 
   useEffect(() => {
     fetchData();
-    socket.on("score_updated", fetchData);
-    socket.on("show_overlay", (data: { type: string }) => {
+    const handleOverlay = (data: { type: string }) => {
+      console.log("Streamer Leaderboard received overlay update:", data.type);
       setShowProgress(data.type === "reveal");
-    });
+    };
+    socket.on("score_updated", fetchData);
+    socket.on("show_overlay", handleOverlay);
     socket.on("team_score_update", fetchData);
     socket.on("results", fetchData);
     return () => {
-      socket.off("show_overlay");
+      socket.off("show_overlay", handleOverlay);
       socket.off("score_updated");
       socket.off("team_score_update");
       socket.off("results");
