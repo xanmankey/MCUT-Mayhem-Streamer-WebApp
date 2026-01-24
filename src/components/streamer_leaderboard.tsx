@@ -11,6 +11,7 @@ function StreamerLeaderboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
   const [teamScores, setTeamScores] = useState({ red: 0, blue: 0 });
+  const [showProgress, setShowProgress] = useState(false);
 
   const fetchData = () => {
     fetch(BACKEND + "/leaderboard")
@@ -24,9 +25,13 @@ function StreamerLeaderboard() {
   useEffect(() => {
     fetchData();
     socket.on("score_updated", fetchData);
+    socket.on("show_overlay", (data: { type: string }) => {
+      setShowProgress(data.type === "reveal");
+    });
     socket.on("team_score_update", fetchData);
     socket.on("results", fetchData);
     return () => {
+      socket.off("show_overlay");
       socket.off("score_updated");
       socket.off("team_score_update");
       socket.off("results");
@@ -70,43 +75,45 @@ function StreamerLeaderboard() {
     >
       {/* --- MAIN CONTENT --- */}
       <div className="flex flex-col items-center w-full p-4 flex-grow overflow-hidden">
-        {/* Progress Bars */}
-        <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Live Standings</h2>
-          <div className="flex w-full gap-8 mb-4 items-end">
-            <div className="flex-1">
-              <div className="flex justify-between mb-1">
-                <span className="font-bold text-blue-700 text-lg">FBI / RA</span>
-                <span className="font-bold text-blue-700 text-lg">{teamScores.blue}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-8 border-2 border-blue-200 relative overflow-hidden">
-                <div
-                  className="bg-blue-600 h-full rounded-full transition-all duration-1000 ease-in-out flex items-center justify-end px-2"
-                  style={{ width: `${bluePercent}%` }}
-                >
-                  <span className="text-white text-xs font-bold">{Math.floor(bluePercent)}%</span>
+        {/* Progress Bars - Wrapped in conditional rendering */}
+        {showProgress && (
+          <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 mb-6 transition-all animate-in fade-in slide-in-from-top-4">
+            <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">Live Standings</h2>
+            <div className="flex w-full gap-8 mb-4 items-end">
+              <div className="flex-1">
+                <div className="flex justify-between mb-1">
+                  <span className="font-bold text-blue-700 text-lg">Police / RA</span>
+                  <span className="font-bold text-blue-700 text-lg">{teamScores.blue}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-8 border-2 border-blue-200 relative overflow-hidden">
+                  <div
+                    className="bg-blue-600 h-full rounded-full transition-all duration-1000 ease-in-out flex items-center justify-end px-2"
+                    style={{ width: `${bluePercent}%` }}
+                  >
+                    <span className="text-white text-xs font-bold">{Math.floor(bluePercent)}%</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="font-black text-3xl text-gray-300 pb-1">VS</div>
+              <div className="font-black text-3xl text-gray-300 pb-1">VS</div>
 
-            <div className="flex-1">
-              <div className="flex justify-between mb-1">
-                <span className="font-bold text-red-700 text-lg">MCUT MAFIA</span>
-                <span className="font-bold text-red-700 text-lg">{teamScores.red}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-8 border-2 border-red-200 relative overflow-hidden">
-                <div
-                  className="bg-red-600 h-full rounded-full transition-all duration-1000 ease-in-out flex items-center justify-end px-2"
-                  style={{ width: `${redPercent}%` }}
-                >
-                  <span className="text-white text-xs font-bold">{Math.floor(redPercent)}%</span>
+              <div className="flex-1">
+                <div className="flex justify-between mb-1">
+                  <span className="font-bold text-red-700 text-lg">MCUT MAFIA</span>
+                  <span className="font-bold text-red-700 text-lg">{teamScores.red}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-8 border-2 border-red-200 relative overflow-hidden">
+                  <div
+                    className="bg-red-600 h-full rounded-full transition-all duration-1000 ease-in-out flex items-center justify-end px-2"
+                    style={{ width: `${redPercent}%` }}
+                  >
+                    <span className="text-white text-xs font-bold">{Math.floor(redPercent)}%</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Player Leaderboard */}
         <div className="w-full max-w-3xl flex flex-col items-center flex-grow overflow-hidden">

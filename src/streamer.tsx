@@ -143,7 +143,7 @@ function MainApp() {
           onClick={() => {
             fetch(BACKEND + "/reset_questions", { method: "POST" })
               .then((res) => res.json())
-              .then((data) => window.location.reload());
+              .then(() => window.location.reload());
           }}
         >
           Reset Questions
@@ -153,7 +153,7 @@ function MainApp() {
           onClick={() => {
             fetch(BACKEND + "/delete_players", { method: "POST" })
               .then((res) => res.json())
-              .then((data) => window.location.reload());
+              .then(() => window.location.reload());
           }}
         >
           Delete Players
