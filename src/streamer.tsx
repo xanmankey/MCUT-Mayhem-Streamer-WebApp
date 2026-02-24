@@ -2,10 +2,18 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 import { BACKEND, SocketContext, SocketProvider } from "./utils";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import StreamerQuestions from "./components/streamer_questions";
 import StreamerResponses from "./components/streamer_responses";
 import StreamerLeaderboard from "./components/streamer_leaderboard";
+import StreamerFinale from "./components/streamer_finale";
 import Timer from "./components/timer";
 import { useContext, useEffect, useState } from "react";
 
@@ -19,6 +27,7 @@ function AppRoutes() {
       <Route path="/responses" element={<StreamerResponses />} />
       <Route path="/leaderboard" element={<StreamerLeaderboard />} />
       <Route path="/timer" element={<Timer />} />
+      <Route path="/finale" element={<StreamerFinale />} />
     </Routes>
   );
 }
@@ -26,6 +35,7 @@ function AppRoutes() {
 function MainApp() {
   const socket = useContext(SocketContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // State: 'none' (hidden) or 'reveal' (shows FBI/Mafia based on team)
   const [overlayState, setOverlayState] = useState<"none" | "reveal">("none");
@@ -40,6 +50,25 @@ function MainApp() {
       socket.off("score_updated");
     };
   }, [location, socket]);
+
+  const triggerFinale = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to trigger the finale? This will push all finale questions to the viewers."
+      )
+    ) {
+      fetch(BACKEND + "/start_finale", {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.message);
+          // Move the streamer to the finale dashboard
+          navigate("/finale");
+        })
+        .catch((err) => console.error("Error starting finale:", err));
+    }
+  };
 
   // Toggle: Hidden -> Reveal (Split) -> Hidden
   const toggleOverlay = () => {
@@ -131,10 +160,18 @@ function MainApp() {
           ⚡ Betray FBI (-250)
         </button>
         <button
-          onClick={() => triggerScriptedEvent("equalize")}
-          style={{ backgroundColor: "#581c87", color: "#d8b4fe", border: "2px solid #6b21a8" }}
+          onClick={triggerFinale}
+          style={{
+            backgroundColor: "#000000",
+            color: "#00ff00",
+            border: "2px solid #00ff00",
+            fontWeight: "900",
+            padding: "5px 15px",
+            textShadow: "0 0 5px #00ff00",
+            boxShadow: "0 0 10px rgba(0, 255, 0, 0.5)",
+          }}
         >
-          ⚡ Equalizer (Tie)
+          🚀 FINALE
         </button>
         <div style={{ width: "20px" }}></div> {/* Spacer */}
         {/* --- RESET CONTROLS --- */}
