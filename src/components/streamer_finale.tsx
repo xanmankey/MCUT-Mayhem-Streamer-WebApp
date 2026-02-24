@@ -23,13 +23,19 @@ function StreamerFinale() {
     };
 
     // 2. Listen for live feed events
-    const handleFeedEvent = (data: Omit<FeedEvent, "id">) => {
+    const handleFeedEvent = (data: {
+      username: string;
+      team: string;
+      question: string;
+      correct: boolean;
+    }) => {
       const eventId = Math.random().toString(36).substring(7);
+
+      // Just drop it straight into the feed
       const newEvent = { ...data, id: eventId };
+      setFeed((prev) => [newEvent, ...prev].slice(0, 8));
 
-      setFeed((prev) => [newEvent, ...prev].slice(0, 8)); // Keep max 8 on screen
-
-      // Auto-remove after 4.5 seconds for the "fade out" effect
+      // The Cleanup: Auto-remove after 4.5 seconds
       setTimeout(() => {
         setFeed((currentFeed) => currentFeed.filter((item) => item.id !== eventId));
       }, 4500);
@@ -132,23 +138,21 @@ function StreamerFinale() {
                 is hacking... <span className="italic text-gray-400">"{item.question}"</span>
               </span>
             </div>
-            <div className="ml-4">
+            <div className="ml-4 flex-shrink-0 flex justify-end">
               {item.correct ? (
-                <span className="text-green-400 font-black text-2xl tracking-wider px-3 py-1 bg-green-900/30 rounded-lg">
+                <span className="text-green-400 font-black text-xl tracking-wider px-3 py-1 bg-green-900/30 rounded-lg shadow-[0_0_10px_rgba(74,222,128,0.5)]">
                   SUCCESS
                 </span>
               ) : (
-                <span className="text-gray-500 font-bold text-xl px-3 py-1 bg-gray-800/50 rounded-lg">
-                  PROCESSING...
+                <span className="text-red-500 font-black text-xl tracking-wider px-3 py-1 bg-red-900/30 rounded-lg shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                  FAILURE
                 </span>
               )}
             </div>
           </div>
         ))}
         {feed.length === 0 && (
-          <div className="text-center text-gray-600 italic text-2xl mt-10">
-            Awaiting terminal inputs...
-          </div>
+          <div className="text-center text-gray-600 italic text-2xl mt-10">Awaiting answers...</div>
         )}
       </div>
     </div>
