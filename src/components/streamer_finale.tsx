@@ -18,8 +18,8 @@ function StreamerFinale() {
 
   useEffect(() => {
     // 1. Listen for score updates
-    const handleScoreUpdate = (data: any) => {
-      setTeamScores({ red: data.red_modifier, blue: data.blue_modifier });
+    const handleScoreUpdate = (data: { red: number; blue: number }) => {
+      setTeamScores({ red: data.red, blue: data.blue });
     };
 
     // 2. Listen for live feed events

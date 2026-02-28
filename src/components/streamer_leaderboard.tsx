@@ -17,9 +17,18 @@ function StreamerLeaderboard() {
     fetch(BACKEND + "/leaderboard")
       .then((res) => res.json())
       .then((data) => setLeaderboard(data.leaderboard));
+
     fetch(BACKEND + "/get_team_scores")
       .then((res) => res.json())
-      .then((data) => setTeamScores({ red: data.red, blue: data.blue }));
+      .then((data) => {
+        setTeamScores({ red: data.red, blue: data.blue });
+        // --- FIX: Check the overlay state on mount ---
+        if (data.overlay === "reveal" || data.overlay === "fbi" || data.overlay === "mafia") {
+          setShowProgress(true);
+        } else {
+          setShowProgress(false);
+        }
+      });
   };
 
   useEffect(() => {
@@ -84,7 +93,7 @@ function StreamerLeaderboard() {
             <div className="flex w-full gap-8 mb-4 items-end">
               <div className="flex-1">
                 <div className="flex justify-between mb-1">
-                  <span className="font-bold text-blue-700 text-lg">Police / RA</span>
+                  <span className="font-bold text-blue-700 text-lg">RA Law Enforcement</span>
                   <span className="font-bold text-blue-700 text-lg">{teamScores.blue}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-8 border-2 border-blue-200 relative overflow-hidden">
@@ -164,7 +173,7 @@ function StreamerLeaderboard() {
                   )}
                   {player.team === "blue" && (
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded border border-blue-200">
-                      FBI
+                      LAW ENFORCEMENT
                     </span>
                   )}
                   <input
