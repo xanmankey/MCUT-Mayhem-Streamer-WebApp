@@ -166,9 +166,10 @@ function StreamerResponses() {
                 color: (context) => {
                   const labels = context.chart.data.labels;
                   const label = labels ? (labels[context.dataIndex] as string) : "";
-                  console.log(label);
-                  return correctAnswers?.some((answer: string) =>
-                    label.toLowerCase().includes(answer.toLowerCase())
+
+                  // FIX: Use strict equality (===) instead of .includes()
+                  return correctAnswers?.some(
+                    (answer: string) => label.toLowerCase() === answer.toLowerCase().trim()
                   )
                     ? "green"
                     : "red";
