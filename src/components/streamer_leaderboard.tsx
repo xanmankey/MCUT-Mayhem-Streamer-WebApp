@@ -22,7 +22,7 @@ function StreamerLeaderboard() {
       .then((res) => res.json())
       .then((data) => {
         setTeamScores({ red: data.red, blue: data.blue });
-        // --- FIX: Check the overlay state on mount ---
+        // --- NEW: Force the progress bars to show if the overlay is active ---
         if (data.overlay === "reveal" || data.overlay === "fbi" || data.overlay === "mafia") {
           setShowProgress(true);
         } else {
