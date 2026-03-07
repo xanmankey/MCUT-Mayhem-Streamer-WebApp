@@ -86,16 +86,16 @@ function MainApp() {
   };
 
   // --- NEW: SCRIPTED EVENT TRIGGER ---
-  const triggerScriptedEvent = (eventType: string) => {
-    fetch(BACKEND + "/trigger_scripted_event", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event_type: eventType }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log("Event triggered:", data))
-      .catch((err) => console.error("Error triggering event:", err));
-  };
+  // const triggerScriptedEvent = (eventType: string) => {
+  //   fetch(BACKEND + "/trigger_scripted_event", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ event_type: eventType }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => console.log("Event triggered:", data))
+  //     .catch((err) => console.error("Error triggering event:", err));
+  // };
 
   return (
     <>
