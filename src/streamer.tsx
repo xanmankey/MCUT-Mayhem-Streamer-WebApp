@@ -153,12 +153,12 @@ function MainApp() {
         </button>
         <div style={{ width: "20px" }}></div> {/* Spacer */}
         {/* --- SECRET EVENT BUTTONS (For Streamer Only) --- */}
-        <button
+        {/* <button
           onClick={() => triggerScriptedEvent("betray_fbi")}
           style={{ backgroundColor: "#7f1d1d", color: "#fca5a5", border: "2px solid #991b1b" }}
         >
           ⚡ Betray FBI (-250)
-        </button>
+        </button> */}
         <button
           onClick={triggerFinale}
           style={{
